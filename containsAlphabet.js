@@ -12,7 +12,14 @@
  * This service returns a JSON string with the boolean response
  * Specifically - True if all letters of the alphabet found, otherwise false. 
  *   {
+ *     "success": true,
  *     "result": true
+ *   }
+ *
+ * If there is an error in the request body, the response will look similar to:
+ *   {
+ *     "success": false,
+ *     "error" "Some Error Message Here"
  *   }
  * ------------------------------------------------------------------------------------------------
  * @author Rob Mullins <rob.mullins.official@gmail.com>
