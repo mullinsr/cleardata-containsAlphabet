@@ -33,8 +33,14 @@ const alphabet = 'abcdefghijklmnopqrstuvwxyz';
  * @param {object|string} success   - Optional JSON.stringify compatible object or string to indicate Lambda success.
  */
 exports.handler = function(event, context, callback) {
-  // Ensure Input String Provided && Send Result if Input Contains Each Letter of Alphabet
-  if (!event.body.input) return sendResponse(400, {success:false, error: 'Missing input string in request body'});
+  // Ensure Input String Provided:
+  if (!event.body)       return sendResponse(400, {success:false, error: 'Missing JSON request body'});
+  try {
+    event.body = JSON.parse(event.body);
+  } catch (e) {
+    return sendResponse(400, {success:false, error: 'Invalid JSON request body'})
+  }
+  if (!event.body.input) return sendResponse(400, {success:false, error: 'Missing JSON request body'});
   else                   return sendResponse(200, {success:true, result: containsAlphabet(event.body.input)});
 
   /**
