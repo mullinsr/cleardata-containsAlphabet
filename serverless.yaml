@@ -1,0 +1,30 @@
+service: contains-alphabet-service
+
+provider:
+    name: aws
+  
+# Define Function:
+functions:
+  contains-alphabet-service:
+    # Lambda Basic Settings:
+    handler: containsAlphabet.handler
+    name: contains-alphabet-service
+    description: Checks if an input string contains each letter of the alphabet atleast once.
+    memorySize: 128
+    runtime: nodejs8.10
+    timeout: 5
+    package:
+      include:
+        - include-containsAlphabet.js
+    # Lambda Event Source
+    events:
+    # API Gateway
+    - http:
+        path: contains-alphabet-service
+        method: post
+        # Enable CORS
+        cors:
+          origins:
+            - '*'
+
+
