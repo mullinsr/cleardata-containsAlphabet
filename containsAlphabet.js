@@ -58,12 +58,10 @@ exports.handler = function(event, context, callback) {
    */
   function containsAlphabet(input) {
     input = input.replace(/[^a-zA-Z]/gi, '').toLowerCase(); // Remove non-letters (numbers, special chars, etc) && convert to all lower case.
-    let count = 0;
     for (let i=0; i < alphabet.length; i++) {
-      if (input.indexOf(alphabet[i]) > -1) count++;
-      if (count === 26) return true; 
+      if (input.indexOf(alphabet[i]) === -1) return false;
     }
-    return false;
+    return true;
   }
 
   /**
