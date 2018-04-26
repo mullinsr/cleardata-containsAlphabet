@@ -40,15 +40,18 @@ const alphabet = 'abcdefghijklmnopqrstuvwxyz';
  * @param {object|string} success   - Optional JSON.stringify compatible object or string to indicate Lambda success.
  */
 exports.handler = function(event, context, callback) {
-  // Ensure Input String Provided:
-  if (!event.body)       return sendResponse(400, {success:false, error: 'Missing JSON request body'});
+  // Validate Request Body :: Ensure `input` JSON property set...
+  if (!event.body) return sendResponse(400, {success:false, error: 'Missing JSON request body.'});
   try {
     event.body = JSON.parse(event.body);
   } catch (e) {
-    return sendResponse(400, {success:false, error: 'Invalid JSON request body'})
+    return sendResponse(400, {success:false, error: 'Invalid JSON request body.'})
   }
-  if (!event.body.input) return sendResponse(400, {success:false, error: 'Missing JSON request body'});
-  else                   return sendResponse(200, {success:true, result: containsAlphabet(event.body.input)});
+  if (!event.body.input)                    return sendResponse(400, {success:false, error: "Missing 'input' property in the JSON request body."});
+  if (typeof event.body.input !== 'string') return sendResponse(400, {success:false, error: "Property 'input' must be a valid string."});
+  
+  // Request Body Valid :: Check if string contains alphabet & return result to client...
+  return sendResponse(200, {success:true, result: containsAlphabet(event.body.input)});
 
   /**
    * Checks if the input string contains every letter of the alphabet atleast once. 
