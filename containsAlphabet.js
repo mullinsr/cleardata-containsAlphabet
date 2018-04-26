@@ -12,7 +12,14 @@
  * This service returns a JSON string with the boolean response
  * Specifically - True if all letters of the alphabet found, otherwise false. 
  *   {
+ *     "success": true,
  *     "result": true
+ *   }
+ *
+ * If there is an error in the request body, the response will look similar to:
+ *   {
+ *     "success": false,
+ *     "error" "Some Error Message Here"
  *   }
  * ------------------------------------------------------------------------------------------------
  * @author Rob Mullins <rob.mullins.official@gmail.com>
@@ -51,12 +58,10 @@ exports.handler = function(event, context, callback) {
    */
   function containsAlphabet(input) {
     input = input.replace(/[^a-zA-Z]/gi, '').toLowerCase(); // Remove non-letters (numbers, special chars, etc) && convert to all lower case.
-    let count = 0;
     for (let i=0; i < alphabet.length; i++) {
-      if (input.indexOf(alphabet[i]) > -1) count++;
-      if (count === 26) return true; 
+      if (input.indexOf(alphabet[i]) === -1) return false;
     }
-    return false;
+    return true;
   }
 
   /**
